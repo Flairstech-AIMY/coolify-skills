@@ -89,6 +89,8 @@ Generate the password in memory. Never print it. Read the database back after cr
 
 The start endpoint may reject `GET` with `405`; use the documented `POST` form with an empty JSON body. Keep the database private and persistent.
 
+Do not assume the database resource name is its internal DNS hostname. Prefer the connection template or the hostname returned by the target Coolify configuration. A resource name such as `aimy-scanner-postgres` can differ from the internal hostname used by application containers.
+
 ### Private SSH application
 
 `POST /applications/private-deploy-key`
@@ -137,6 +139,23 @@ git -c core.sshCommand=$ssh ls-remote git@github.com:<org>/<repo>.git refs/heads
 
 Use `is_shown_once: true` for secrets such as `DATABASE_URL` and `SECRET_KEY`. Never list or read back their values. Build-time frontend configuration such as `VITE_API_BASE_URL` may be public, but it must contain only a public HTTPS API URL or a deliberate relative path.
 
+Coolify may create preview copies of variables automatically. When changing an existing production variable, use the application env collection endpoint with `PATCH`, identify the target by its `key`, and omit the returned `uuid` from the JSON body:
+
+`PATCH /applications/{application_uuid}/envs`
+
+```json
+{
+  "key": "CORS_ORIGINS",
+  "value": "https://<frontend-fqdn>",
+  "is_preview": false,
+  "is_literal": true,
+  "is_multiline": false,
+  "is_shown_once": false
+}
+```
+
+Including `uuid` in this payload is rejected with `422`. Confirm the updated variable by listing names and metadata only.
+
 ### Deployment
 
 Trigger a deployment with:
@@ -150,6 +169,8 @@ Trigger a deployment with:
 ```
 
 Capture the returned deployment UUID. Verify it with `GET /deployments/{deployment_uuid}` and treat `in_progress` as incomplete. A successful trigger response only means that Coolify queued the deployment.
+
+Read the application after creation or deployment and use its generated `fqdn` when present. This is safer than inventing a domain. Update the backend CORS origin and frontend API URL from those generated FQDNs before the final redeploy.
 
 ## Deployment Order
 
