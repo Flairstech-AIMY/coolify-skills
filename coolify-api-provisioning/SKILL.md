@@ -1,6 +1,6 @@
 ---
 name: coolify-api-provisioning
-description: 'Provision and manage Coolify resources through the REST API. Use when creating projects, environments, PostgreSQL databases, applications, deployments, domains, variables, or health checks through Coolify API v1.'
+description: 'Provision and manage Coolify resources through the REST API, including writable project, PostgreSQL, private SSH application, variable, and deployment operations. Use when browser automation is unavailable or not authorized.'
 argument-hint: 'Provide the Coolify base URL, project/environment target, repository source, and whether existing resources must be preserved.'
 ---
 
@@ -25,11 +25,18 @@ Never place a real API token, database password, JWT secret, private key, or AWS
 Use an authorization header and JSON bodies. Example PowerShell shape:
 
 ```powershell
-$headers = @{ Authorization = "Bearer $env:COOLIFY_TOKEN"; Accept = 'application/json' }
+$token = (Get-Content $env:COOLIFY_TOKEN_FILE -Raw).Trim()
+$headers = @{
+	Authorization = "Bearer $token"
+	Accept = 'application/json'
+	'Content-Type' = 'application/json'
+}
 Invoke-RestMethod -Method Get -Uri "$env:COOLIFY_URL/api/v1/projects" -Headers $headers
 ```
 
 Use the API documentation or the running instance to confirm exact endpoint names and required fields for the installed Coolify version. Do not guess a UUID or silently treat a `404` as an empty result.
+
+For the concrete writable request schemas and PowerShell patterns, load `coolify-api-direct-rest`. Confirmed routes include `POST /projects`, `POST /databases/postgresql`, `POST /applications/private-deploy-key`, `POST /applications/{uuid}/envs`, `POST /databases/{uuid}/start`, and `POST /deploy`.
 
 ## Provisioning Order
 
