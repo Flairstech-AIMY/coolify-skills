@@ -51,6 +51,52 @@ For an application account reset:
 
 Do not reset credentials by editing committed files, frontend variables, deployment logs, or a database container environment variable. Do not expose a plaintext password in chat or shell history.
 
+### Coolify Resource Terminals
+
+When the user can open a Coolify terminal, prefer the backend application terminal for account recovery. It uses the deployed application code and its configured database connection, avoiding mismatches between local and production password-hashing settings.
+
+Use the database terminal only for narrow inspection or SQL that cannot be performed from the backend terminal. The database role may not be `postgres`; use the resource-provided variables without printing the environment:
+
+```sh
+psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+```
+
+Inside `psql`, inspect account metadata without selecting `hashed_password`:
+
+```sql
+SELECT username, is_active FROM users ORDER BY id;
+```
+
+For a deployed FastAPI application using this repository's `hash_password()` helper, run the reset in the backend terminal with an interactive password prompt:
+
+```sh
+python - <<'PY'
+import getpass
+from app.database import SessionLocal
+from app.models import User
+from app.auth import hash_password
+
+password = getpass.getpass("New password: ")
+db = SessionLocal()
+try:
+	user = db.query(User).filter(User.username == "admin").first()
+	if user is None:
+		user = User(username="admin", hashed_password=hash_password(password), is_active=True)
+		db.add(user)
+		action = "created"
+	else:
+		user.hashed_password = hash_password(password)
+		user.is_active = True
+		action = "reset"
+	db.commit()
+	print(f"admin account {action}")
+finally:
+	db.close()
+PY
+```
+
+Use `python3` if needed. The prompt label is not the password; the user types the password after the prompt. Never put the password in the command, SQL, deployment variables, logs, or chat. If the backend terminal cannot import the application package or connect to the configured database, stop and report the missing access path.
+
 ## Verification
 
 Record only status codes, resource UUIDs, timestamps, and redacted error categories. Verify:
