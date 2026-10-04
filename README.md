@@ -52,7 +52,7 @@ gh skill update --all
 | [coolify-postgres-connectivity-recovery](skills/coolify-postgres-connectivity-recovery/SKILL.md) | Diagnose and repair Coolify application startup failures caused by PostgreSQL DNS, network, or DATABASE_URL configuration problems. |
 | [coolify-private-ssh-deployment](skills/coolify-private-ssh-deployment/SKILL.md) | Deploy private GitHub repositories to Coolify with an SSH deploy key. |
 | [coolify-terminal-access](skills/coolify-terminal-access/SKILL.md) | Guide Coolify terminal access for a deployed application or database, including inspecting PostgreSQL roles safely and running bounded server-side commands without exposing secrets. |
-| [deployment-secret-handling](skills/deployment-secret-handling/SKILL.md) | Handle Coolify, GitHub, database, JWT, and AWS deployment secrets safely. Use when generating keys, configuring environment variables, debugging authentication, reviewing logs, rotating tokens, or cleaning up deployment artifacts. |
+| [deployment-secret-handling](skills/deployment-secret-handling/SKILL.md) | Handle Coolify, GitHub, database, JWT, and AWS deployment secrets safely. |
 | [deployment-security-verification](skills/deployment-security-verification/SKILL.md) | Review and verify production deployment security for this scanner before or after Coolify deployment. |
 | [git-github-workflow](skills/git-github-workflow/SKILL.md) | Manage Git and GitHub repository workflows safely. |
 
