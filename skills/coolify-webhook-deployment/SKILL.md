@@ -48,7 +48,7 @@ Do not guess a route or method from a status code. Check the exact endpoint type
 
 | Status | Checks |
 | --- | --- |
-| `401` | Token is present, unexpired, correctly scoped to the active team, and sent as `Authorization: Bearer <token>`. |
+| `401` | Token is present, unexpired, correctly scoped to the active team, and sent as an `Authorization: Bearer <token>` header. |
 | `403` | Token has the `deploy` ability and the user/token is allowed to deploy the target resource. |
 | `404` | Host, API prefix, copied webhook URL, resource UUID/tag, and any proxy path rewriting are correct. |
 | `405` | URL and HTTP method match the documented webhook/API contract for this Coolify instance. Do not blindly change `GET` to `POST` (or vice versa); validate whether this is a copied webhook URL or the API endpoint and use the matching body/query format. |
