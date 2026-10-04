@@ -45,6 +45,7 @@ gh skill update --all
 | [coolify-deployment-diagnostics](skills/coolify-deployment-diagnostics/SKILL.md) | Diagnose Coolify deployment failures using deployment records, source checkout evidence, application status, proxy state, and Git credential checks. |
 | [coolify-deployment-planning](skills/coolify-deployment-planning/SKILL.md) | Plan a Coolify deployment for this FastAPI and Vite/React application. |
 | [coolify-deployment-verification](skills/coolify-deployment-verification/SKILL.md) | Verify a complete Coolify deployment of the FastAPI backend, Vite frontend, and PostgreSQL dependency. |
+| [coolify-webhook-deployment](skills/coolify-webhook-deployment/SKILL.md) | Configure and verify Coolify webhook deployments from CI, with safe authentication and HTTP failure diagnosis. |
 | [coolify-frontend-api-debugging](skills/coolify-frontend-api-debugging/SKILL.md) | Debug frontend-to-backend API failures in Coolify, especially 405, 404, CORS, unauthorized, stale-bundle, or login errors. |
 | [coolify-frontend-api-fix](skills/coolify-frontend-api-fix/SKILL.md) | Fix and verify frontend-to-backend API routing failures in this Coolify deployment. |
 | [coolify-mcp-operations](skills/coolify-mcp-operations/SKILL.md) | Use the Coolify MCP tools to inspect, configure, deploy, and verify team-owned resources without browser automation or secret exposure. |
